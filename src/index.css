@@ -1,0 +1,132 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #0b0b0d;
+  --color-surface: rgba(255, 255, 255, 0.035);
+  --color-surface-strong: rgba(255, 255, 255, 0.06);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-fg: #f4f4f5;
+  --color-muted: #9ca3af;
+  --color-faint: #6b7280;
+  --color-accent: #38bdf8;
+  --color-accent-strong: #0ea5e9;
+  --color-danger: #f87171;
+
+  --font-sans:
+    'Noto Sans TC', system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang TC',
+    'Microsoft JhengHei', sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1100px 560px at 50% -8%, #16171c 0%, transparent 60%),
+    #0b0b0d;
+  color: #e5e7eb;
+  font-family:
+    'Noto Sans TC', system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang TC',
+    'Microsoft JhengHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* font-family utility overrides (no in-app font switcher; body uses Noto Sans TC) */
+.font-system {
+  font-family:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang TC',
+    'Microsoft JhengHei', sans-serif;
+}
+.font-sans {
+  font-family:
+    'Noto Sans TC', system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang TC',
+    'Microsoft JhengHei', sans-serif;
+}
+
+@keyframes catchup-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.catchup {
+  animation: catchup-pulse 1s ease-in-out infinite;
+}
+
+/* typing indicator (waiting-for-speech) */
+@keyframes typing-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+.typing-dot {
+  animation: typing-bounce 1.2s ease-in-out infinite;
+}
+
+/* newly committed subtitle line fades/rises in */
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.line-in {
+  animation: line-in 0.26s ease-out both;
+}
+
+/* live subtitle lines: smooth opacity changes, isolate paint */
+.sub-line {
+  transition: opacity 0.2s ease-out;
+  contain: content;
+  will-change: opacity;
+}
+
+/* streaming caret on the interim (live) line — reuses the .catchup pulse keyframe */
+.sub-caret {
+  display: inline-block;
+  inline-size: 0.5em;
+  block-size: 1.05em;
+  margin-inline-start: 0.12em;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  background: currentColor;
+  animation: catchup-pulse 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catchup,
+  .typing-dot,
+  .line-in,
+  .sub-caret,
+  .animate-spin {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
